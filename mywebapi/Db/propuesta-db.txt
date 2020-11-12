@@ -1,0 +1,40 @@
+Clientes (Usuarios del agua)
+    Cuenta (numero entero consecutivo)
+    Clave de localizacion
+    Contrato
+    Numero de medidor
+    Nombres y apellidos
+    Domicilio
+        Calle principal
+        Calle A
+        Calle B
+        Numero exterior
+        Numero interior
+        Codigo postal
+        Colonia
+        Localidad
+        Municipio
+
+Recibos (Adeudos del cliente)
+    Periodos
+        Lectura anterior
+        Lectura actual
+        Consumo (m3)
+        Fecha de lectura
+        Fecha de ultimo pago
+        Monto de ultimo pago
+        Tipo de contrato (Domestico, comercial, industrial)
+        Giro (Casa habitacion, comercio, supermercado)
+        Cobro
+            Consumo ($)
+            Drenaje
+            Saneamiento
+            Bomberos
+            Cruz Roja
+            Multas
+            Recargos
+
+Pagos
+    Registro
+    Comprobante
+    Reportes
