@@ -4,6 +4,10 @@ Clientes (Usuarios del agua)
     Contrato
     Numero de medidor
     Nombres y apellidos
+    Tipo de contrato
+    Giro
+    Razon social
+    RFC
     Domicilio
         Calle principal
         Calle A
