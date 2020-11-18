@@ -9,6 +9,7 @@ namespace mywebapi.DbContexts
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Domicilio> Domcilios { get; set; }
         public DbSet<Recibo> Recibos { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,7 +27,7 @@ namespace mywebapi.DbContexts
 
             modelBuilder.Entity<Cliente>(cliente => 
             {
-                cliente.HasKey(c => c.Cuenta);
+                // cliente.HasKey(c => c.Cuenta);
                 cliente.HasOne(c => c.Domicilio).WithOne(d => d.Cliente);
                 cliente.HasMany(c => c.Recibos).WithOne(r => r.Cliente);
             });
@@ -39,7 +40,14 @@ namespace mywebapi.DbContexts
             modelBuilder.Entity<Recibo>(recibo => 
             {
                 recibo.HasOne(r => r.Cliente).WithMany(c => c.Recibos);
+                recibo.HasOne(r => r.Pago).WithOne(p => p.Recibo);
             });
+
+            modelBuilder.Entity<Pago>(pago =>
+            {
+                pago.HasOne(p => p.Recibo).WithOne(r => r.Pago);
+            });
+
 
             base.OnModelCreating(modelBuilder);
         }

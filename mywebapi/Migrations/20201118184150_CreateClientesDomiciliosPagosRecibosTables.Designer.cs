@@ -9,8 +9,8 @@ using mywebapi.DbContexts;
 namespace mywebapi.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20201117153334_CreateClienteDomicilioReciboTables")]
-    partial class CreateClienteDomicilioReciboTables
+    [Migration("20201118184150_CreateClientesDomiciliosPagosRecibosTables")]
+    partial class CreateClientesDomiciliosPagosRecibosTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,34 +25,49 @@ namespace mywebapi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellidos")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
                     b.Property<string>("ClaveDeLocalizacion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("DomicilioId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Giro")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Nombres")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
                     b.Property<string>("NumeroDeContrato")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NumeroDeMedidor")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RazonSocial")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Rfc")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(13);
 
                     b.Property<string>("TipoDeContrato")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(30);
 
                     b.HasKey("Cuenta");
 
@@ -65,34 +80,47 @@ namespace mywebapi.Migrations
             modelBuilder.Entity("mywebapi.Models.Domicilio", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                        // .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CalleA")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<string>("CalleB")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<string>("CallePrincipal")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<int>("CodigoPostal")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Colonia")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Localidad")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Municipio")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
 
                     b.Property<int>("NumeroExterior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("NumeroInterior")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -100,29 +128,58 @@ namespace mywebapi.Migrations
                     b.ToTable("Domcilios");
                 });
 
-            modelBuilder.Entity("mywebapi.Models.Recibo", b =>
+            modelBuilder.Entity("mywebapi.Models.Pago", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("AdeudoAnterior")
-                        .HasColumnType("REAL");
-
                     b.Property<int>("Autorizacion")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Banco")
+                        .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaDePago")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NumeroDeTarjeta")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReciboId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TitularDeTarjeta")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReciboId")
+                        .IsUnique();
+
+                    b.ToTable("Pagos");
+                });
+
+            modelBuilder.Entity("mywebapi.Models.Recibo", b =>
+                {
+                    b.Property<int>("Id")
+                        // .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("AdeudoAnterior")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Agua")
+                        .HasColumnType("REAL");
 
                     b.Property<double>("Bomberos")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int>("ClienteCuenta")
                         .HasColumnType("INTEGER");
-
-                    b.Property<double>("Consumo")
-                        .HasColumnType("REAL");
 
                     b.Property<int>("ConsumoEnM3")
                         .HasColumnType("INTEGER");
@@ -137,9 +194,6 @@ namespace mywebapi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaDeLectura")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("FechaDePago")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaDelUltimoPago")
@@ -160,11 +214,13 @@ namespace mywebapi.Migrations
                     b.Property<double>("Multas")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("NumeroDeTarjeta")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Otros")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Periodo")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(30);
 
                     b.Property<double>("Recargos")
                         .HasColumnType("REAL");
@@ -175,15 +231,12 @@ namespace mywebapi.Migrations
                     b.Property<double>("SubTotal")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("TitularDeTarjeta")
-                        .HasColumnType("TEXT");
-
                     b.Property<double>("Total")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("ClienteCuenta");
 
                     b.ToTable("Recibos");
                 });
@@ -242,11 +295,20 @@ namespace mywebapi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("mywebapi.Models.Pago", b =>
+                {
+                    b.HasOne("mywebapi.Models.Recibo", "Recibo")
+                        .WithOne("Pago")
+                        .HasForeignKey("mywebapi.Models.Pago", "ReciboId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("mywebapi.Models.Recibo", b =>
                 {
                     b.HasOne("mywebapi.Models.Cliente", "Cliente")
                         .WithMany("Recibos")
-                        .HasForeignKey("ClienteId")
+                        .HasForeignKey("ClienteCuenta")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
