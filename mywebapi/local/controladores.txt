@@ -1,0 +1,17 @@
+api/
+    consultar adeudo
+        recibe como argumento el número de cuenta de cliente
+        si esta pagado debe mostrar mensaje que no tiene adeudos
+        sino esta pagado regresa el detalle del adeudo en json
+    registrar el pago
+        recibe como argumento un objeto de tipo pago
+        registra el pago en la tabla de pagos
+        muestra el comprobante de pago
+    reimprimir el comprobante de pago
+        recibe como argumento el número de cuenta de cliente
+        muestra el último comprobante de pago
+    
+    reporte de pagos por periodo
+        ruta que require autenticación para administradores
+        recibe como argumento las fechas del periodo
+        regresa la lista de pagos en formato json
