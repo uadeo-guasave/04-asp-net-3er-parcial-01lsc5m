@@ -70,6 +70,9 @@ namespace mywebapi.Models
         [Required]
         public bool EstaPagado { get; set; }
 
+        [Required]
+        public int PagoId { get; set; }
+
         // Controlado por EFCore
         public Cliente Cliente { get; set; }
         public Pago Pago { get; set; }

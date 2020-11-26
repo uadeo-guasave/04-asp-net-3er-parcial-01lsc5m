@@ -40,12 +40,12 @@ namespace mywebapi.DbContexts
             modelBuilder.Entity<Recibo>(recibo => 
             {
                 recibo.HasOne(r => r.Cliente).WithMany(c => c.Recibos);
-                recibo.HasOne(r => r.Pago).WithOne(p => p.Recibo);
+                recibo.HasOne(r => r.Pago).WithOne(p => p.Recibo).HasForeignKey("PagoId");
             });
 
             modelBuilder.Entity<Pago>(pago =>
             {
-                pago.HasOne(p => p.Recibo).WithOne(r => r.Pago);
+                pago.HasOne(p => p.Recibo).WithOne(r => r.Pago).HasForeignKey("ReciboId");
             });
 
 
