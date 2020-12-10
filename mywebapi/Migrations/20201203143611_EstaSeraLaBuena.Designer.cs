@@ -9,8 +9,8 @@ using mywebapi.DbContexts;
 namespace mywebapi.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20201118184150_CreateClientesDomiciliosPagosRecibosTables")]
-    partial class CreateClientesDomiciliosPagosRecibosTables
+    [Migration("20201203143611_EstaSeraLaBuena")]
+    partial class EstaSeraLaBuena
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -148,17 +148,11 @@ namespace mywebapi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ReciboId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("TitularDeTarjeta")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReciboId")
-                        .IsUnique();
 
                     b.ToTable("Pagos");
                 });
@@ -217,6 +211,9 @@ namespace mywebapi.Migrations
                     b.Property<double>("Otros")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("PagoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Periodo")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -237,6 +234,9 @@ namespace mywebapi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteCuenta");
+
+                    b.HasIndex("PagoId")
+                        .IsUnique();
 
                     b.ToTable("Recibos");
                 });
@@ -295,20 +295,17 @@ namespace mywebapi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("mywebapi.Models.Pago", b =>
-                {
-                    b.HasOne("mywebapi.Models.Recibo", "Recibo")
-                        .WithOne("Pago")
-                        .HasForeignKey("mywebapi.Models.Pago", "ReciboId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("mywebapi.Models.Recibo", b =>
                 {
                     b.HasOne("mywebapi.Models.Cliente", "Cliente")
                         .WithMany("Recibos")
                         .HasForeignKey("ClienteCuenta")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("mywebapi.Models.Pago", "Pago")
+                        .WithOne("Recibo")
+                        .HasForeignKey("mywebapi.Models.Recibo", "PagoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

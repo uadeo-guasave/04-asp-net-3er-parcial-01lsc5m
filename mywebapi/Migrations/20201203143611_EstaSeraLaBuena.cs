@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace mywebapi.Migrations
 {
-    public partial class CreateClientesDomiciliosPagosRecibosTables : Migration
+    public partial class EstaSeraLaBuena : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,6 @@ namespace mywebapi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                        // .Annotation("Sqlite:Autoincrement", true),
                     CallePrincipal = table.Column<string>(maxLength: 100, nullable: false),
                     CalleA = table.Column<string>(maxLength: 100, nullable: false),
                     CalleB = table.Column<string>(maxLength: 100, nullable: false),
@@ -29,11 +28,27 @@ namespace mywebapi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pagos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TitularDeTarjeta = table.Column<string>(nullable: false),
+                    NumeroDeTarjeta = table.Column<string>(nullable: false),
+                    Autorizacion = table.Column<int>(nullable: false),
+                    FechaDePago = table.Column<DateTime>(nullable: false),
+                    Banco = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pagos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clientes",
                 columns: table => new
                 {
                     Cuenta = table.Column<int>(nullable: false),
-                        // .Annotation("Sqlite:Autoincrement", true),
                     ClaveDeLocalizacion = table.Column<string>(nullable: false),
                     NumeroDeContrato = table.Column<string>(nullable: false),
                     NumeroDeMedidor = table.Column<string>(nullable: false),
@@ -61,7 +76,6 @@ namespace mywebapi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                        // .Annotation("Sqlite:Autoincrement", true),
                     ClienteCuenta = table.Column<int>(nullable: false),
                     Periodo = table.Column<string>(maxLength: 30, nullable: false),
                     LecturaAnterior = table.Column<int>(nullable: false),
@@ -82,7 +96,8 @@ namespace mywebapi.Migrations
                     SubTotal = table.Column<double>(nullable: false),
                     Iva = table.Column<double>(nullable: false),
                     Total = table.Column<double>(nullable: false),
-                    EstaPagado = table.Column<bool>(nullable: false)
+                    EstaPagado = table.Column<bool>(nullable: false),
+                    PagoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,28 +108,10 @@ namespace mywebapi.Migrations
                         principalTable: "Clientes",
                         principalColumn: "Cuenta",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Pagos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TitularDeTarjeta = table.Column<string>(nullable: false),
-                    NumeroDeTarjeta = table.Column<string>(nullable: false),
-                    Autorizacion = table.Column<int>(nullable: false),
-                    FechaDePago = table.Column<DateTime>(nullable: false),
-                    Banco = table.Column<string>(nullable: false),
-                    ReciboId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pagos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pagos_Recibos_ReciboId",
-                        column: x => x.ReciboId,
-                        principalTable: "Recibos",
+                        name: "FK_Recibos_Pagos_PagoId",
+                        column: x => x.PagoId,
+                        principalTable: "Pagos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -126,27 +123,27 @@ namespace mywebapi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pagos_ReciboId",
-                table: "Pagos",
-                column: "ReciboId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Recibos_ClienteCuenta",
                 table: "Recibos",
                 column: "ClienteCuenta");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recibos_PagoId",
+                table: "Recibos",
+                column: "PagoId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Pagos");
-
-            migrationBuilder.DropTable(
                 name: "Recibos");
 
             migrationBuilder.DropTable(
                 name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Pagos");
 
             migrationBuilder.DropTable(
                 name: "Domcilios");

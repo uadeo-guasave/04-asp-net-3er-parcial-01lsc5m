@@ -21,8 +21,8 @@ namespace mywebapi.Models
         [Required]
         public string Banco { get; set; }
 
-        [Required]
-        public int ReciboId { get; set; }
+        // [Required]
+        // public int ReciboId { get; set; }
 
         // Controlado por EFCore
         public Recibo Recibo { get; set; }
